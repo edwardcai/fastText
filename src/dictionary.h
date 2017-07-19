@@ -69,6 +69,7 @@ class Dictionary {
     int32_t nwords() const;
     int32_t nlabels() const;
     int64_t ntokens() const;
+    int32_t getNgramId(const std::string&) const;
     int32_t getId(const std::string&) const;
     entry_type getType(int32_t) const;
     entry_type getType(const std::string&) const;
@@ -77,14 +78,8 @@ class Dictionary {
     const std::vector<int32_t>& getSubwords(int32_t) const;
     const std::vector<int32_t> getSubwords(const std::string&) const;
     void computeSubwords(const std::string&, std::vector<int32_t>&) const;
-    void computeSubwords(
-        const std::string&,
-        std::vector<int32_t>&,
-        std::vector<std::string>&) const;
-    void getSubwords(
-        const std::string&,
-        std::vector<int32_t>&,
-        std::vector<std::string>&) const;
+    void computeSubwords( const std::string&,std::vector<int32_t>&, std::vector<std::string>&) const;
+    void getSubwords(const std::string&, std::vector<int32_t>&, std::vector<std::string>&) const;
     uint32_t hash(const std::string& str) const;
     void add(const std::string&);
     bool readWord(std::istream&, std::string&) const;

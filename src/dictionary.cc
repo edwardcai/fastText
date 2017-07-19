@@ -95,6 +95,7 @@ void Dictionary::getSubwords(const std::string& word,
   computeSubwords(BOW + word + EOW, ngrams, substrings);
 }
 
+
 bool Dictionary::discard(int32_t id, real rand) const {
   assert(id >= 0);
   assert(id < nwords_);
@@ -105,6 +106,11 @@ bool Dictionary::discard(int32_t id, real rand) const {
 int32_t Dictionary::getId(const std::string& w) const {
   int32_t h = find(w);
   return word2int_[h];
+}
+
+int32_t Dictionary::getNgramId(const std::string& ngram) const {
+    int32_t h = hash(ngram) % args_->bucket;
+    return nwords_ + h;
 }
 
 entry_type Dictionary::getType(int32_t id) const {
@@ -119,7 +125,7 @@ entry_type Dictionary::getType(const std::string& w) const {
 
 std::string Dictionary::getWord(int32_t id) const {
   assert(id >= 0);
-  assert(id < size_);
+  assert(id < size_); //will segfault is id >= size 
   return words_[id].word;
 }
 
@@ -131,7 +137,6 @@ uint32_t Dictionary::hash(const std::string& str) const {
   }
   return h;
 }
-
 void Dictionary::computeSubwords(const std::string& word,
                                std::vector<int32_t>& ngrams,
                                std::vector<std::string>& substrings) const {

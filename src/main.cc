@@ -70,6 +70,14 @@ void printPrintSentenceVectorsUsage() {
     << std::endl;
 }
 
+void printPrintNgramsFromFileUsage() {
+  std::cerr
+    << "usage: fasttext print-ngrams <model> <word>\n\n"
+    << "  <model>      model filename\n"
+    << "  <file>       file containing ngrams(one per line)\n"
+    << std::endl;
+}
+
 void printPrintNgramsUsage() {
   std::cerr
     << "usage: fasttext print-ngrams <model> <word>\n\n"
@@ -187,6 +195,18 @@ void printSentenceVectors(int argc, char** argv) {
   exit(0);
 }
 
+
+void printNgramsFromFile(int argc, char** argv) {
+  if (argc != 4) {
+    printPrintNgramsFromFileUsage();
+    exit(EXIT_FAILURE);
+  }
+  FastText fasttext;
+  fasttext.loadModel(std::string(argv[2]));
+  fasttext.printNgramVectorsFromFile(std::string(argv[3]));
+  exit(0);
+}
+
 void printNgrams(int argc, char** argv) {
   if (argc != 4) {
     printPrintNgramsUsage();
@@ -255,6 +275,8 @@ int main(int argc, char** argv) {
     printSentenceVectors(argc, argv);
   } else if (command == "print-ngrams") {
     printNgrams(argc, argv);
+  } else if (command == "print-ngrams-from-file") {
+    printNgramsFromFile(argc,argv);
   } else if (command == "nn") {
     nn(argc, argv);
   } else if (command == "analogies") {

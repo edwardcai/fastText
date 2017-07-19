@@ -52,7 +52,7 @@ class FastText {
 
   public:
     FastText();
-
+    void printNgramVectorsFromFile(std::string filename) const;
     void getVector(Vector&, const std::string&) const;
     void saveVectors();
     void saveOutput();

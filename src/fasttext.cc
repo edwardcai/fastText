@@ -320,6 +320,24 @@ void FastText::test(std::istream& in, int32_t k) {
   std::cerr << "Number of examples: " << nexamples << std::endl;
 }
 
+void FastText::printNgramVectorsFromFile(std::string filename) const {
+  std::ifstream in(filename);
+  std::string line;
+  Vector vec(args_->dim);
+  while (std::getline(in, line)) {
+    line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+    int32_t  ngram_id = dict_->getNgramId(line);
+    vec.zero();
+    if (ngram_id >= 0) {
+      vec.addRow(*input_, ngram_id);
+      std::cout << line << " " << vec << std::endl;
+    }else{
+      std::cout << "skipping:" << line << std::endl;
+    }
+  }
+
+}
+
 void FastText::predict(std::istream& in, int32_t k,
                        std::vector<std::pair<real,std::string>>& predictions) const {
   std::vector<int32_t> words, labels;

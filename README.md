@@ -1,9 +1,8 @@
 # Addtions:
 This branch of fasttext allows you to save subword embeddings to disk.
-## Usage
-'''
+```
 $./fasttext print-ngrams-from-file <path-to-file-with-subwords>
-'''
+```
 
 # fastText
 

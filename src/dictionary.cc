@@ -86,11 +86,15 @@ void Dictionary::getSubwords(const std::string& word,
   ngrams.clear();
   substrings.clear();
   if (i >= 0) {
-    ngrams.push_back(i);
-    substrings.push_back(words_[i].word);
+    //if (args_->wordInSubwords == 1) {
+      ngrams.push_back(i);
+      substrings.push_back(words_[i].word);
+    //}
   } else {
-    ngrams.push_back(-1);
-    substrings.push_back(word);
+    if (args_->wordInSubwords == 1) {
+      ngrams.push_back(-1);
+      substrings.push_back(word);
+    }
   }
   computeSubwords(BOW + word + EOW, ngrams, substrings);
 }
@@ -178,7 +182,9 @@ void Dictionary::computeSubwords(const std::string& word,
 void Dictionary::initNgrams() {
   for (size_t i = 0; i < size_; i++) {
     std::string word = BOW + words_[i].word + EOW;
-    words_[i].subwords.push_back(i);
+    if (args_->wordInSubwords == 1) {
+      words_[i].subwords.push_back(i);
+    }
     computeSubwords(word, words_[i].subwords);
   }
 }
@@ -226,6 +232,7 @@ void Dictionary::readFromFile(std::istream& in) {
   threshold(args_->minCount, args_->minCountLabel);
   initTableDiscard();
   initNgrams();
+
   if (args_->verbose > 0) {
     std::cerr << "\rRead " << ntokens_  / 1000000 << "M words" << std::endl;
     std::cerr << "Number of words:  " << nwords_ << std::endl;

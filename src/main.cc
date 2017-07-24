@@ -29,6 +29,8 @@ void printUsage() {
     << "  print-sentence-vectors  print sentence vectors given a trained model\n"
     << "  nn                      query for nearest neighbors\n"
     << "  analogies               query for analogies\n"
+    << "  print-ngrams            print subword vectors for a word\n"
+    << "  print-ngrams-from-file  print subword vectors\n"
     << std::endl;
 }
 

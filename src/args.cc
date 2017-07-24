@@ -37,6 +37,7 @@ Args::Args() {
   verbose = 2;
   pretrainedVectors = "";
   saveOutput = 0;
+  wordInSubwords = 1;
 
   qout = false;
   retrain = false;
@@ -122,6 +123,8 @@ void Args::parseArgs(int argc, char** argv) {
       pretrainedVectors = std::string(argv[ai + 1]);
     } else if (strcmp(argv[ai], "-saveOutput") == 0) {
       saveOutput = atoi(argv[ai + 1]);
+    } else if (strcmp(argv[ai], "-wordInSubwords") == 0) {
+      wordInSubwords = atoi(argv[ai + 1]);
     } else if (strcmp(argv[ai], "-qnorm") == 0) {
       qnorm = true; ai--;
     } else if (strcmp(argv[ai], "-retrain") == 0) {
@@ -191,6 +194,7 @@ void Args::printTrainingHelp() {
     << "  -loss               loss function {ns, hs, softmax} [ns]\n"
     << "  -thread             number of threads [" << thread << "]\n"
     << "  -pretrainedVectors  pretrained word vectors for supervised learning ["<< pretrainedVectors <<"]\n"
+    << "  -wordInSubwords         whether the word should be included as part of the set of subwrds [" << wordInSubwords << "]\n"
     << "  -saveOutput         whether output params should be saved [" << saveOutput << "]\n";
 }
 

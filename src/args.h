@@ -45,6 +45,7 @@ class Args {
     int verbose;
     std::string pretrainedVectors;
     int saveOutput;
+    int wordInSubwords;
 
     bool qout;
     bool retrain;

@@ -1,7 +1,14 @@
 # Addtions:
-This branch of fasttext allows you to save subword embeddings to disk.
+This branch of fasttext  has the following additional features:
+
+1. save subword embeddings to disk.
 ```
 $./fasttext print-ngrams-from-file <path-to-file-with-subwords>
+```
+
+2. skip full words when learning subword embeddings
+```
+$./fasttest skipgram -wordInSubwords <0/1> <Other options>
 ```
 
 # fastText

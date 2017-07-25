@@ -19,6 +19,7 @@ def char_levenshetien_dist(a, b, h = 0):
 
 def cosine_dist(a, b):
     dist = 0.
+    dist_c = 0
     a = ['<EPS>'] if len(a) == 0 else a
     b = ['<EPS>'] if len(b) == 0 else b
     for a_idx, b_idx in itertools.product(a, b):
@@ -27,14 +28,19 @@ def cosine_dist(a, b):
         else:
             cs = ET.cosine_sim(a_idx, b_idx, full_word = 1)
         dist += (1. - cs)
+        dist_c += 1
+    dist/= float(dist_c)
     dist = np.around(dist, 4)
     assert dist >= 0.
     return dist
 
-def show_alignments(path):
+def show_alignments(path, verbose = 0):
     a = []
     for p in path:
-        a.append(' '.join(p.src_str) + '->' + ' '.join(p.tar_str))
+        if verbose == 0:
+            a.append(' '.join(p.src_str) + '->' + ' '.join(p.tar_str))
+        else:
+            a.append(' '.join(p.src_str) + '->' + ' '.join(p.tar_str) + '(' + '%.4f' % p.node_cost + ')')
     return ', '.join(a)
 
 
@@ -46,7 +52,7 @@ if __name__ == '__main__':
     opt.add_argument('--minn', action='store', dest='minn', type= int, required = True)
     opt.add_argument('--maxn', action='store', dest='maxn', type= int, required = True)
     opt.add_argument('--span_size', action='store', dest='span_size', type = int, required = False, default = 1, choices=range(1,10))
-    opt.add_argument('-v', action='store_true', dest='verbose', required= False, default= False)
+    opt.add_argument('-v', action='store', dest='verbose', required=False, default= 0, choices=[0,1,2], type = int)
     options = opt.parse_args()
     ET = CombinedEmbeddings(options.word_vec_file, options.dim, options.ngram_vec_file, options.minn, options.maxn)
     a = "i love to read books".split()
@@ -69,15 +75,15 @@ if __name__ == '__main__':
         for sa_idx, sa in enumerate(story_arcs):
             sa = sa.split() 
             table, path = cs.span_edit_dist(user_intput,sa)
-            if options.verbose:
+            if options.verbose == 2:
                 pprint(path)
-            print sa_idx, show_alignments(path), 'cost:', path[-1].cost
-        print '------------------------------------------------'
+            print sa_idx, show_alignments(path, options.verbose), 'cost:', path[-1].cost
+        print '------------------------------------------------\n'
         print 'Levenshtein Distance based:'
         for sa_idx, sa in enumerate(story_arcs):
             sa = sa.split() 
             table, path = ls.span_edit_dist(user_intput,sa)
-            if options.verbose:
+            if options.verbose == 2:
                 pprint(path)
-            print sa_idx, show_alignments(path), 'cost:', path[-1].cost
+            print sa_idx, show_alignments(path, options.verbose), 'cost:', path[-1].cost
         print '------------------------------------------------\n'

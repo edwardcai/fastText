@@ -22,16 +22,17 @@ class SearchState(object):
         self.src_r_context = [] 
         self.tar_str = tar_str
         self.next_pos = next_pos
+        self.node_cost = 0.
 
     def __repr__(self,):
-        try:
-            return str(self.cost) + ', ' + self.action + ', (' + self.src_l_context + ',' + self.src_r_context + '), '  + (self.src_str if self.src_str.strip() != '' else EPS)  + '->' + (self.tar_str if self.tar_str.strip() != '' else EPS) + ", BP:" + str(self.next_pos)
-        except:
-            self.src_l_context = ' '.join(self.src_l_context)
-            self.src_r_context = ' '.join(self.src_r_context)
-            self.src_str = ' '.join(self.src_str)
-            self.tar_str = ' '.join(self.tar_str)
-            return str(self.cost) + ', ' + self.action + ', (' + self.src_l_context + ',' + self.src_r_context + '), '  + (self.src_str if self.src_str.strip() != '' else EPS)  + '->' + (self.tar_str if self.tar_str.strip() != '' else EPS) + ", BP:" + str(self.next_pos)
+        if isinstance(self.src_str, list) and isinstance(self.tar_str, list) and isinstance(self.src_l_context, list) and isinstance(self.src_r_context, list):
+            src_l_context = ' '.join(self.src_l_context)
+            src_r_context = ' '.join(self.src_r_context)
+            src_str = ' '.join(self.src_str)
+            tar_str = ' '.join(self.tar_str)
+            return str(self.cost) + ', ' + str(self.node_cost)  + ', ' + self.action + ', (' + src_l_context + ',' + src_r_context + '), '  + (src_str if src_str.strip() != '' else EPS)  + '->' + (tar_str if tar_str.strip() != '' else EPS) + ", BP:" + str(self.next_pos)
+        else:
+            return str(self.cost) + ', ' + str(self.node_cost) + ', ' + self.action + ', (' + self.src_l_context + ',' + self.src_r_context + '), '  + (self.src_str if self.src_str.strip() != '' else EPS)  + '->' + (self.tar_str if self.tar_str.strip() != '' else EPS) + ", BP:" + str(self.next_pos)
 
 class SpanEditSearch(object):
     def __init__(self, cost_per_action, span_size, dist_func):
@@ -61,33 +62,10 @@ class SpanEditSearch(object):
         else:
             new_cost = self.dist_func(s_a, s_b)
         ss = SearchState(old_cost + new_cost, '-', s_a, s_b, (bp_i, bp_j))
+        ss.node_cost = new_cost
         ss.src_l_context = a[bp_i - 1: bp_i] if a[bp_i - 1: bp_i] != [] else [EPS]
         ss.src_r_context = a[bp_i + len(s_a): bp_i + len(s_a) + 1] if a[bp_i + len(s_a): bp_i + len(s_a) + 1] != [] else [EPS]
         return ss
-        """if len(s_a) >= 1 and len(s_b) == 0:
-            ss = SearchState(old_cost + len(s_a), '-', s_a, s_b, (bp_i, bp_j))
-            ss.src_l_context = a[bp_i - 1: bp_i] if a[bp_i - 1: bp_i] != [] else [EPS]
-            ss.src_r_context = a[bp_i + len(s_a): bp_i + len(s_a) + 1] if a[bp_i + len(s_a): bp_i + len(s_a) + 1] != [] else [EPS]
-            return ss
-        elif len(s_a) == 0 and len(s_b) >= 1:
-            ss = SearchState(old_cost + len(s_b), '+', s_a, s_b, (bp_i, bp_j))
-            ss.src_l_context = a[bp_i - 1: bp_i] if a[bp_i - 1: bp_i] != [] else [EPS]
-            ss.src_r_context = a[bp_i + len(s_a): bp_i + len(s_a) + 1] if a[bp_i + len(s_a): bp_i + len(s_a) + 1] != [] else [EPS]
-            return ss
-        elif len(s_a) >= 1 and len(s_b) >= 1:
-            if ''.join(s_a) == ''.join(s_b):
-                ss = SearchState(old_cost, '=', s_a, s_b, (bp_i, bp_j))
-                ss.src_l_context = a[bp_i - 1: bp_i] if a[bp_i - 1: bp_i] != [] else [EPS]
-                ss.src_r_context = a[bp_i + len(s_a): bp_i + len(s_a) + 1] if a[bp_i + len(s_a): bp_i + len(s_a) + 1] != [] else [EPS]
-                return ss
-            else:
-                ss = SearchState(old_cost + len(s_a) + len(s_b), '*', s_a, s_b, (bp_i, bp_j))
-                ss.src_l_context = a[bp_i - 1: bp_i] if a[bp_i - 1: bp_i] != [] else [EPS]
-                ss.src_r_context = a[bp_i + len(s_a): bp_i + len(s_a) + 1] if a[bp_i + len(s_a): bp_i + len(s_a) + 1] != [] else [EPS]
-                return ss
-        else:
-            raise BaseException('no edit...')
-        """
 
     def backwordPass(self, bp, goal, decorate = False):
         path = []

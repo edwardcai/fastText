@@ -1,13 +1,19 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 __author__ = 'arenduchintala'
 import itertools
 import sys
 import argparse
-import codecs
 from embed_utils import CombinedEmbeddings
 from span_ed import SpanEditSearch
 from pprint import pprint
 import numpy as np
+import sys
+import codecs
+reload(sys)
+sys.setdefaultencoding("utf-8")
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
+
 
 def char_levenshetien_dist(a, b, h = 0):
     assert isinstance(a, list)
@@ -26,7 +32,7 @@ def cosine_dist(a, b):
         if a_idx.strip() == '<EPS>' or b_idx.strip() == '<EPS>':
             cs = 0.
         else:
-            cs = ET.cosine_sim(a_idx, b_idx, full_word = 1)
+            cs = ET.cosine_sim(a_idx, b_idx, full_word = 0)
         dist += (1. - cs)
         dist_c += 1
     dist/= float(dist_c)
@@ -38,9 +44,9 @@ def show_alignments(path, verbose = 0):
     a = []
     for p in path:
         if verbose == 0:
-            a.append(' '.join(p.src_str) + '->' + ' '.join(p.tar_str))
+            a.append(u' '.join(p.src_str) + '->' + u' '.join(p.tar_str))
         else:
-            a.append(' '.join(p.src_str) + '->' + ' '.join(p.tar_str) + '(' + '%.4f' % p.node_cost + ')')
+            a.append(u' '.join(p.src_str) + '->' + u' '.join(p.tar_str) + '(' + '%.4f' % p.node_cost + ')')
     return ', '.join(a)
 
 

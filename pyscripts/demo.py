@@ -52,7 +52,7 @@ if __name__ == '__main__':
     opt.add_argument('--minn', action='store', dest='minn', type= int, required = True)
     opt.add_argument('--maxn', action='store', dest='maxn', type= int, required = True)
     opt.add_argument('--span_size', action='store', dest='span_size', type = int, required = False, default = 1, choices=range(1,10))
-    opt.add_argument('-v', action='store', dest='verbose', required=False, default= 0, choices=[0,1,2], type = int)
+    opt.add_argument('-v', action='store', dest='verbose', required=False, default= 1, choices=[0,1,2], type = int)
     options = opt.parse_args()
     ET = CombinedEmbeddings(options.word_vec_file, options.dim, options.ngram_vec_file, options.minn, options.maxn)
     a = "i love to read books".split()

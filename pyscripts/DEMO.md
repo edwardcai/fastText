@@ -1,7 +1,12 @@
 # Demo:
+0. Train subword models with `fastText` with `-wordInSubwords` option set to `0`.  Pretrained vectors are avaible, contact me.
+
 ```
 $export $WORD_EMBEDDING_FILE='../models/fastext.full-simple-wiki.e.50.m.skipgram.ming.1.maxg.4.winsubs.0.vec'
 $export $NGRAM_EMBEDDING_FILE='../models/fastext.full-simple-wiki.e.50.m.skipgram.ming.1.maxg.4.winsubs.0.ngrams'
+```
+1. To run the demo:
+```
 $./demo.py  --word-vec $WORD_EMBEDDING_FILE --ngram-vec $NGRAM_EMBEDDING_FILE --minn 1 --maxn 4 --dim 50 --span_size 1
 ../models/fastext.full-simple-wiki.e.50.m.skipgram.ming.1.maxg.4.winsubs.0.vec
 ../models/fastext.full-simple-wiki.e.50.m.skipgram.ming.1.maxg.4.winsubs.0.ngrams
@@ -17,7 +22,7 @@ Levenshtein Distance based:
 1 i->i(0.0000), love->like(2.0000), ->to(2.0000), ->read(4.0000), novels->books(4.0000) cost: 12.0
 ------------------------------------------------
 ```
-To use only subword vectors, simply drop the `--word-vec` argument.
+2. To use only subword vectors, simply drop the `--word-vec` argument.
 ```
 $./demo.py --ngram-vec $NGRAM_EMBEDDING_FILE --minn 1 --maxn 4 --dim 50 --span_size 1
 ../models/fastext.full-simple-wiki.e.50.m.skipgram.ming.1.maxg.4.winsubs.0.ngrams
@@ -33,7 +38,7 @@ Levenshtein Distance based:
 1 i->i(0.0000), love->like(2.0000), ->to(2.0000), ->read(4.0000), novels->books(4.0000) cost: 12.0
 ------------------------------------------------
 ```
-Contiguous spans size can be changed using `--span_size' option
+3. Contiguous spans size can be changed using `--span_size' option
 ```
 $./demo.py --ngram-vec $NGRAM_EMBEDDING_FILE --minn 1 --maxn 4 --dim 50 --span_size 2
 ../models/fastext.full-simple-wiki.e.50.m.skipgram.ming.1.maxg.4.winsubs.0.ngrams

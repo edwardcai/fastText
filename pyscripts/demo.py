@@ -13,6 +13,7 @@ import codecs
 reload(sys)
 sys.setdefaultencoding("utf-8")
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
+sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
 
 
 def char_levenshetien_dist(a, b, h = 0):
@@ -26,15 +27,16 @@ def char_levenshetien_dist(a, b, h = 0):
 def cosine_dist(a, b):
     dist = 0.
     dist_c = 0
-    a = ['<EPS>'] if len(a) == 0 else a
-    b = ['<EPS>'] if len(b) == 0 else b
+    if len(a) == 0 or len(b) == 0:
+        return 1.
     for a_idx, b_idx in itertools.product(a, b):
         if a_idx.strip() == '<EPS>' or b_idx.strip() == '<EPS>':
-            cs = 0.
+            pass
         else:
-            cs = ET.cosine_sim(a_idx, b_idx, full_word = 0)
-        dist += (1. - cs)
-        dist_c += 1
+            cs = (1. + ET.cosine_sim(a_idx, b_idx, full_word = 0 if options.word_vec_file is None else 1)) * .5 #squeeze into +1,0 range from +1,-1 
+            cd = 1 - cs 
+            dist += cd
+            dist_c += 1
     dist/= float(dist_c)
     dist = np.around(dist, 4)
     assert dist >= 0.
@@ -52,7 +54,7 @@ def show_alignments(path, verbose = 0):
 
 if __name__ == '__main__':
     opt= argparse.ArgumentParser(description="write ngrams from a corpus to stdout")
-    opt.add_argument('--word-vec', action='store', dest='word_vec_file', required = True)
+    opt.add_argument('--word-vec', action='store', dest='word_vec_file', default = None)
     opt.add_argument('--dim', action='store', dest='dim', required = True, type = int)
     opt.add_argument('--ngram-vec', action='store', dest='ngram_vec_file', required = True)
     opt.add_argument('--minn', action='store', dest='minn', type= int, required = True)

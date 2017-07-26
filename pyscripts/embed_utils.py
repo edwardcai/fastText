@@ -66,6 +66,7 @@ class CombinedEmbeddings(object):
         self.dim = dim
         if self.word_vectors is not None and self.ngram_vectors is not None:
             assert self.ngram_vectors.dim == self.word_vectors.dim
+        assert self.word_vectors is not None or self.ngram_vectors is not None
 
     def compute_word_vector(self, w, full_word = 1):
         final_vec = np.zeros(self.dim, dtype=np.float32)
@@ -84,6 +85,9 @@ class CombinedEmbeddings(object):
                 g_idx = self.ngram_vectors.w2idx.get(g, -1)
                 if g_idx >= 0:
                     final_vec += self.ngram_vectors.mat[g_idx] #[self.ngram_vectors.w2idx[g],:]
+                    final_vec_num += 1
+                else:
+                    sys.stderr.write('Skipping:' + g + ',could not find vector for subword\n')
                     final_vec_num += 1
         else:
             pass
@@ -114,6 +118,8 @@ if __name__ == '__main__':
     print ET.cosine_sim('loving', 'like', full_word = 1)
     print ET.cosine_sim('hello', 'hey', full_word = 1)
     print ET.cosine_sim('book', 'write', full_word = 1)
+    print 'nice, good', ET.cosine_sim('nice', 'good', full_word = 1)
+    print 'nice, bad', ET.cosine_sim('nice', 'bad', full_word = 1)
 
     print ET.cosine_sim('kids', 'children', full_word = 0)
     print ET.cosine_sim('loving', 'like', full_word = 0)

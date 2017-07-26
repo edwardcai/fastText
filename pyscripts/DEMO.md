@@ -2,8 +2,8 @@
 0. Train subword models with `fastText` with `-wordInSubwords` option set to `0`.  Pretrained vectors are avaible, contact me.
 
 ```
-$export $WORD_EMBEDDING_FILE='../models/fastext.full-simple-wiki.e.50.m.skipgram.ming.1.maxg.4.winsubs.0.vec'
-$export $NGRAM_EMBEDDING_FILE='../models/fastext.full-simple-wiki.e.50.m.skipgram.ming.1.maxg.4.winsubs.0.ngrams'
+$export WORD_EMBEDDING_FILE='../models/fastext.full-simple-wiki.e.50.m.skipgram.ming.1.maxg.4.winsubs.0.vec'
+$export NGRAM_EMBEDDING_FILE='../models/fastext.full-simple-wiki.e.50.m.skipgram.ming.1.maxg.4.winsubs.0.ngrams'
 ```
 1. To run the demo:
 ```

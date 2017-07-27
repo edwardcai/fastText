@@ -72,7 +72,7 @@ if __name__ == '__main__':
     ls = SpanEditSearch(0., options.span_size, char_levenshetien_dist) 
     story_arcs = '' 
     while story_arcs is not None:
-        story_arcs = raw_input("Enter chat options (comma seperated):")
+        story_arcs = raw_input("Enter chat options (comma separated):")
         if story_arcs.strip() == '':
             story_arcs = None
             continue

@@ -14,7 +14,7 @@ class SearchState(object):
         else:
             print tar_str
             print src_str
-            assert 0 == 1
+            raise BaseException("these should be lists!")
         self.cost = cost
         self.action = action
         self.src_str = src_str

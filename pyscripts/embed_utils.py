@@ -18,7 +18,7 @@ class Embeddings(object):
         self.load(_file, _with_header)
 
     def load(self, v_file, _with_header):
-        print v_file
+        sys.stderr.write('reading:' + v_file + '\n')
         line_idx = 0
         for line in codecs.open(v_file, 'r', 'utf-8').readlines():
             if line_idx == 0 and _with_header:
@@ -29,13 +29,9 @@ class Embeddings(object):
                 i_ = line.split()
                 w_ = i_[0]
                 w_idx = self.add2w(w_)
-                #self.add2mat(i_[1:], w_idx)
                 v_ = np.array(i_[1:], dtype=np.float32)
                 self.mat[w_idx] = v_
             line_idx += 1
-
-    def getId(self, w):
-        return self.w2idx.get(w, -1)
 
     def add2w(self, w):
         w_idx = self.w2idx.get(w, len(self.w2idx))
@@ -69,6 +65,7 @@ class CombinedEmbeddings(object):
         assert self.word_vectors is not None or self.ngram_vectors is not None
 
     def compute_word_vector(self, w, full_word = 1):
+        #w = unicode(w)
         final_vec = np.zeros(self.dim, dtype=np.float32)
         final_vec_num = 0
         if full_word == 1 and self.word_vectors is not None:
@@ -99,6 +96,7 @@ class CombinedEmbeddings(object):
         return w_vec, w_norm
 
     def cosine_sim(self, w1, w2, full_word = 1):
+        assert isinstance(w1, unicode) and isinstance(w2, unicode)
         w1_vec, w1_norm = self.get_vec(w1, full_word) 
         w2_vec, w2_norm = self.get_vec(w2, full_word) 
         return w1_vec.dot(w2_vec) / (w1_norm * w2_norm)

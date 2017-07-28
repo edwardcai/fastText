@@ -10,10 +10,8 @@ from span_ed import SpanEditSearch
 import numpy as np
 import sys
 import codecs
-#reload(sys)
-#sys.setdefaultencoding("utf-8")
 sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
-sys.stderr = codecs.getwriter('utf8')(sys.stderr)
+sys.stderr = codecs.getwriter('utf-8')(sys.stderr)
 sys.stdin = codecs.getreader('utf-8')(sys.stdin)
 
 def char_levenshetien_dist(a, b, h = 0):
@@ -77,7 +75,8 @@ if __name__ == '__main__':
     headers = "REPLY CLOSEST_STRING COSINE_DISTANCE_ALIGNS COSINE_DISTANCE_ALIGN_COSTS COSINE_DISTANCE LEV_DISTANCE_ALIGN LEV_DISTANCE_ALIGN_COSTS LEV_DISTANCE BETTER_ANSWER".split()
     sys.stdout.write('\t'.join(headers) + '\n')
     line_num = -1
-    for o_line in sys.stdin:
+    #for o_line in codecs.open(options.data, 'r', 'utf-8').readlines():
+    for o_line in sys.stdin: 
         line_num +=1
         try:
             sys.stderr.write('line_num:' + str(line_num) + '\n')

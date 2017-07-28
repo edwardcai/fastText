@@ -84,7 +84,7 @@ class CombinedEmbeddings(object):
                     final_vec += self.ngram_vectors.mat[g_idx] #[self.ngram_vectors.w2idx[g],:]
                     final_vec_num += 1
                 else:
-                    sys.stderr.write('Skipping:' + g + ',could not find vector for subword\n')
+                    sys.stderr.write('dropped:' + g+ '\n')
                     final_vec_num += 1
         else:
             pass

@@ -8,7 +8,7 @@ $./fasttext print-ngrams-from-file <path-to-file-with-subwords>
 
 2. skip full words when learning subword embeddings
 ```
-$./fasttest skipgram -wordInSubwords <0/1> <Other options>
+$./fasttext skipgram -wordInSubwords <0/1> <Other options>
 ```
 
 # fastText
